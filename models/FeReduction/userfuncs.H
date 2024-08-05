@@ -141,14 +141,14 @@ namespace mflo_user_funcs
         ghost_cell[dir]+=gcell_adjust;
         cell_int[dir]+=cell_adjust;
 
-        if(sgn == 1 && dir==0) 
+        if(sgn == 1 && dir==0) //-v x_high dirichlet 0
         { 
 
             robin_a(ghost_cell) = 1.0;
             robin_b(ghost_cell) = 0.0;
             robin_f(ghost_cell) = 0.0;
         }
-        else if(sgn == -1 && dir==0)
+        else if(sgn == -1 && dir==0)  // -v x_low
         {
             // lo sides
             amrex::Real electrode_rad=mflo_user_funcs::pin_size;
@@ -160,18 +160,18 @@ namespace mflo_user_funcs
 
             amrex::Real loc_rad=x[0]*x[0]+x[1]*x[1]+x[2]*x[2];
             loc_rad -= x[dir]*x[dir];
-            loc_rad=std::sqrt(loc_rad);
+            loc_rad=std::sqrt(loc_rad);   
 
-            if(loc_rad < electrode_rad)
+            if(loc_rad < electrode_rad)     
             {
-                if(mflo_user_funcs::pin_VI_flag==0)
+                if(mflo_user_funcs::pin_VI_flag==0)   //-v dirichlet pin_voltage
                 {
                     robin_a(ghost_cell) = 1.0;
                     robin_b(ghost_cell) = 0.0;
                     robin_f(ghost_cell) = mflo_user_funcs::pin_voltage;
                 }
                 else
-                {
+                {                                   //-v fixed gradient
                     robin_a(ghost_cell) = 0.0;
                     robin_b(ghost_cell) = 1.0;
                     Real temp=phi(cell_int,TEMP_INDX);

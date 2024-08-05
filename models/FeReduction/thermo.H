@@ -78,7 +78,6 @@ namespace mflo_thermo
         
         rhoe += spec[H_ID]*RU/(gama_h-1.0)*temp;
         rhoe += spec[H2O_ID]*RU/(gama_h2o-1.0)*temp;
-        
         return(rhoe);
     }
 
@@ -209,7 +208,7 @@ namespace mflo_thermo
     {
         Real sig_solid=1.0; //FIX: for FEO
         Real sig_gas=(1+std::tanh(0.0005*(temp-7000.0)))*1000.0+1.0;
-        //Real sig_gas=sig_inter.interpolate(temp);  
+        //Real sig_gas=sig_inter.interpolate(temp);       //-v this gives conductivity of AR+10%FE  
         Real sig=vfrac*sig_gas+(1.0-vfrac)*sig_solid;
         return(sig);
     }
